@@ -1,0 +1,15 @@
+{
+  "name": "kohonennn",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node node_modules/node-som/examples/colors/colors-cluster.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "node-som": "^1.6.6"
+  }
+}
