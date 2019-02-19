@@ -1,6 +1,5 @@
 var fs = require('fs'),
-	som = require('node-som'),
-	Stats = require('fast-stats').Stats;
+	som = require('node-som');
 
 function random_color() {
 	var rint = Math.round(0xffffff * Math.random());
