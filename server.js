@@ -8,7 +8,7 @@ function random_color() {
 
 function random_userDay() {
 	var from = Math.floor((Math.random()*143)+0);
-	var length = Math.floor((Math.random()*48)+18);
+	var length = Math.floor((Math.random()*24)+6);
 	
 	var day = []
 	var k=144
@@ -54,16 +54,31 @@ function analyzeTrainingSet(somConfig, data) {
 
 
 // generate a bunch of random RBG colors
-var sampleColors = [];
-for (var i = 0; i <= 1000; i++)
-	sampleColors.push(random_color());
+// var sampleColors = [];
+// for (var i = 0; i <= 1000; i++)
+// 	sampleColors.push(random_color());
 
 
 var timeLines = [];
-for (var i = 0; i <= 200; i++){
+for (var i = 0; i <= 1000; i++){
 	timeLines.push(random_userDay());
 
 }
+
+// var result = analyzeTrainingSet({
+// 	inputLength: 144,
+// 	maxClusters: 1000,
+// 	loggingEnabled: true,
+// 	inputPatterns: 500,
+// 	radiusReductionPoint: .023,
+// 	alpha: 0.6,
+// 	decayRate: .96,
+// 	minAlpha: .53,
+// 	scale: {
+// 		min: 0,
+// 		max: 1
+// 	}
+// }, timeLines);
 
 var result = analyzeTrainingSet({
 	inputLength: 144,
@@ -72,21 +87,44 @@ var result = analyzeTrainingSet({
 	inputPatterns: 500,
 	radiusReductionPoint: .023,
 	alpha: 0.6,
-	decayRate: .96,
-	minAlpha: .55,
+	minAlpha: .53,
+	decayRate: .999,
 	scale: {
 		min: 0,
 		max: 1
 	}
 }, timeLines);
 
-var pageContent = "<html><style>body{padding:100px}.color-block {width: 4px;height: 17px;float:left}h1{clear:both}</style><body>";
+var pageContent = `
+<html>
+	<style>
+		body{display: flex;}
+		.group-block {min-width: 100px;height: 100px;}
+		.num-block {}
+		.colors-block {display: flex;}
+		.color-block {width: 1px;height: 5px;float:left}
+		h1{clear:both}
+	</style>
+<body>`;
 
 for (var groupKey in result.groups) {
-	pageContent += "<div>" + groupKey + "</div><br/>";
+	pageContent += "<div class=\'group-block\'><div class=\'num-block\'>" + groupKey + "</div>";
+//pageContent += "<div class=\'row\'>"; 
+//for (var z = 1; z <= 1000; z++) {
+	//var groupKey=z;
+
+	//if (result.groups[groupKey]==undefined){
+		//pageContent += "<div class=\'group-block\'><div class=\'num-block\'>" + groupKey + "</div></div>"; 
+		//if (z%32==0)
+		//pageContent += "</div><div class=\'row\'>";
+		//continue
+	//} 
+	//else pageContent += "<div class=\'group-block\'><div class=\'num-block\'>" + groupKey + "</div>";
+
 	for (var i = 0; i <= result.groups[groupKey].inputs.length - 1; i++) {
 		var input = result.groups[groupKey].inputs[i];
-		pageContent += "<div>";
+		pageContent += "<div class=\'colors-block\'>";
+
 		for (var k = 0; k <= result.groups[groupKey].inputs[i].length - 1; k++) {
 			
 			block = input[k]
@@ -94,10 +132,11 @@ for (var groupKey in result.groups) {
 			var color = block===1? '255,0,0':'0,0,0'
 			pageContent += "<div class=\'color-block\' style=\'background-color:rgb("+color+")\'></div>";
 		}
-
-		pageContent += "</div><br/>";
+		pageContent += "</div>";
 	}
-	pageContent += "<br/>"
+	//if (z%32==0)
+		//pageContent += "</div><div class=\'row\'>"; 
+	pageContent += "</div>"
 }
 
 pageContent += "</body>";
